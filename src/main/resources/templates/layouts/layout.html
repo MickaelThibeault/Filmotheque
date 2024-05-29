@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-th-fragment="layout-filmotheque(titrePage, contenuPage, ressourceSupp)">
+<head>
+	<meta charset="UTF-8">
+	<title data-th-replace="${titrePage}">Filmotheque</title>
+	
+	<link rel="stylesheet" data-th-href="@{/css/general.css}">
+	<link rel="stylesheet" data-th-href="@{/css/layout.css}">
+	
+	<!-- CSS variable -->
+	<th:block th:replace="${ressourceSupp}?:~{}"></th:block>
+	
+	<link rel="icon" data-th-href="@{/images/logoENI.png}" sizes="32x32">
+</head>
+<body>
+	
+	<!--  Gérer les fragments -->
+	<div data-th-replace="~{fragments/fragment-entete :: frag-entete}"></div>
+	
+	<!-- Variable -->
+	<main data-th-replace="${contenuPage}?:~{}">
+		Contenu de la page
+	</main>
+	
+	<div data-th-replace="~{fragments/fragment-piedpage :: frag-piedpage}"></div>
+</body>
+</html>

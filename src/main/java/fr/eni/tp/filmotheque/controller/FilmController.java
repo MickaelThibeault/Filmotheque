@@ -33,6 +33,7 @@ public class FilmController {
 	@GetMapping
 	public String afficherFilms(Model model) {
 		List<Film> films = filmService.consulterFilms();
+//		System.out.println(films);
 		model.addAttribute("films", films);
 
 		return "view-films";
@@ -42,6 +43,7 @@ public class FilmController {
 	public String afficherUnFilm(@RequestParam(name = "id", required = true) long id, Model model) {
 		if (id > 0) {
 			Film film = filmService.consulterFilmParId(id);
+			System.out.println(film);
 			if (film != null) {
 				// Ajout de l'instance dans le modèle
 				model.addAttribute("film", film);

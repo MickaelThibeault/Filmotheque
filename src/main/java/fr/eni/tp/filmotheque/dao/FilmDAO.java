@@ -9,4 +9,6 @@ public interface FilmDAO {
     public Film read(long id);
     public List<Film> findAll();
     public String findTitre(long id);
+
+    boolean findTitre(String titre);
 }

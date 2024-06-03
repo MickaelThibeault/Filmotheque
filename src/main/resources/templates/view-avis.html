@@ -8,6 +8,7 @@
 	<!-- Ajout de CSS tp-form.css -->
 	<th:block id="ressources-css">
 		<link rel="stylesheet" data-th-href="@{/css/tp-form.css}">
+		<link rel="stylesheet" data-th-href="@{/css/tp-error.css}">
 	</th:block>
 </head>
 <body>
@@ -15,6 +16,7 @@
 	<main>
 		<form data-th-action="@{/avis/creer?idFilm=}+${idFilm}" method="post" data-th-object="${avis}">
 			<h1 data-th-text="#{view-avis-form.h1} + ${titreFilm}"></h1>
+			<p class="cards" data-th-each="err : ${#fields.errors('global')}" data-th-text="#{${err}}" />
 			<ul class="flex-outer">
 				<li>
 					<label for="inputNote" data-th-text="#{view-avis-form.note}"></label>

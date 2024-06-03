@@ -7,4 +7,6 @@ import java.util.List;
 public interface AvisDAO {
     public void create(Avis avis, long idFilm);
     public List<Avis> findByFilm(long idFilm);
+
+    int countAvis(long idFilm, long idMembre);
 }

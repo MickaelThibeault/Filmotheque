@@ -1,15 +1,23 @@
 package fr.eni.tp.filmotheque.bo;
 
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Length;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Avis implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long id;
+	@Min(value = 0)
+	@Max(value = 5)
 	private int note;
+	@NotBlank
+	@Size(min = 1, max = 250)
 	private String commentaire;
 
 	// Association avec Membre
+	@NotNull
 	private Membre membre;
 
 	public Avis() {

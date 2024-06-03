@@ -2,10 +2,13 @@ package fr.eni.tp.filmotheque.controller;
 
 import java.util.List;
 
+import fr.eni.tp.filmotheque.exceptions.BusinessCode;
+import fr.eni.tp.filmotheque.exceptions.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -98,9 +101,21 @@ public class FilmController {
 			if (bindingResult.hasErrors()) {
 				return "view-film-form";
 			} else {
-				System.out.println(film);
-				filmService.creerFilm(film);
+				try {
+					System.out.println(film);
+					filmService.creerFilm(film);
+				} catch (BusinessException be) {
+					be.getClefsExternalisations().forEach(key -> {
+						ObjectError error = new ObjectError("globalError", key);
+						bindingResult.addError(error);
+					});
+					return "view-film-form";
+				}
 			}
+		} else {
+			System.out.println("Aucun membre en session");
+			ObjectError error = new ObjectError("globalError", BusinessCode.VALIDATION_MEMBRE_ADMIN);
+			bindingResult.addError(error);
 		}
 		return "redirect:/films";
 	}

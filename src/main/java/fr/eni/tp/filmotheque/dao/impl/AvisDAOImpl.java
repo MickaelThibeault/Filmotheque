@@ -1,11 +1,9 @@
 package fr.eni.tp.filmotheque.dao.impl;
 
 import fr.eni.tp.filmotheque.bo.Avis;
-import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.dao.AvisDAO;
 import fr.eni.tp.filmotheque.dao.FilmDAO;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -22,6 +20,8 @@ public class AvisDAOImpl implements AvisDAO {
 
     private static final String CREATE = "INSERT INTO AVIS (note, commentaire, id_membre, id_film) VALUES (:note, :commentaire, :id_membre, :id_film)";
     private static final String FIND_BY_FILM = "SELECT id, note, commentaire, id_membre FROM AVIS WHERE id_film = :idFilm";
+    private final String COUNT_AVIS = "SELECT count(id) FROM AVIS where id_membre = :idMembre and id_film= :idFilm";
+
     private NamedParameterJdbcTemplate jdbcTemplate;
     private FilmDAO filmDAO;
 
@@ -56,6 +56,14 @@ public class AvisDAOImpl implements AvisDAO {
         namedParameters.addValue("idFilm", idFilm);
 
         return jdbcTemplate.query(FIND_BY_FILM, namedParameters, new AvisRowMapper());
+    }
+
+    @Override
+    public int countAvis(long idFilm, long idMembre) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("idFilm", idFilm);
+        namedParameters.addValue("idMembre", idMembre);
+        return jdbcTemplate.queryForObject(COUNT_AVIS, namedParameters, Integer.class);
     }
 
     class AvisRowMapper implements RowMapper<Avis> {

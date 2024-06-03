@@ -4,10 +4,6 @@ import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Participant;
 import fr.eni.tp.filmotheque.dao.FilmDAO;
-import fr.eni.tp.filmotheque.dao.GenreDAO;
-import fr.eni.tp.filmotheque.dao.ParticipantDAO;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -28,17 +24,14 @@ public class FilmDAOImpl implements FilmDAO {
 //    private static final String FIND_TITRE = "SELECT titre FROM FILM WHERE id = ?";
     private static final String FIND_TITRE = "SELECT titre FROM FILM WHERE id = :id";
     private static final String CREATE = "INSERT INTO FILM (titre, annee, duree, synopsis, id_realisateur, id_genre) VALUES (:titre, :annee, :duree, :synopsis, :id_realisateur, :id_genre)";
+    private static final String FIND_TITRE_UNIQUE = "SELECT titre, COUNT(titre) AS nbTitre FROM FILM WHERE titre = :titre GROUP BY titre";
 
-//    private JdbcTemplate jdbcTemplate;
+    //    private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate jdbcTemplate;
-    private ParticipantDAO participantDAO;
-    private GenreDAO genreDAO;
 
-    public FilmDAOImpl(NamedParameterJdbcTemplate jdbcTemplate, ParticipantDAO participantDAO, GenreDAO genreDAO) {
+    public FilmDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
 //        this.jdbcTemplate = jdbcTemplate;
         this.jdbcTemplate = jdbcTemplate;
-        this.participantDAO = participantDAO;
-        this.genreDAO = genreDAO;
     }
 
     @Override
@@ -81,6 +74,14 @@ public class FilmDAOImpl implements FilmDAO {
         namedParameters.addValue("id", id);
         String titre = jdbcTemplate.queryForObject(FIND_TITRE, namedParameters, String.class);
         return titre;
+    }
+
+    @Override
+    public boolean findTitre(String titre) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("titre", titre);
+        return jdbcTemplate.queryForObject(FIND_TITRE_UNIQUE, namedParameters, Integer.class) >= 1;
+        
     }
 
     class FilmRowMapper implements RowMapper<Film> {

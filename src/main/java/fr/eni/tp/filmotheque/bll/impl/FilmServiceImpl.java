@@ -8,6 +8,7 @@ import fr.eni.tp.filmotheque.exceptions.BusinessException;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -94,6 +95,7 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
+    @Transactional
     public void creerFilm(Film film) {
         BusinessException be = new BusinessException();
         boolean isValid = true;

@@ -34,7 +34,7 @@
 					<td>
 						<a data-th-href="@{/films/detail(id=${film.id})}" data-th-text="#{view-films.th.actions.detail}"></a>
 						
-						<th:block data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
+						<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 							<a data-th-href="@{/avis/creer(idFilm=${film.id})}" data-th-text="#{view-films.th.actions.avis}"></a>
 						</th:block>
 					</td>

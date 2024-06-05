@@ -18,11 +18,16 @@
                 <a href="/films" data-th-text="#{frag-entete.a.films}"></a>
             </li>
 
-            <li data-th-if="${membreEnSession != null && membreEnSession.id > 0 && membreEnSession.admin}">
+            <li data-th-if="${!#authorization.expression('isAuthenticated()')}">
+                <a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
+            </li>
+
+            <li data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
                 <a href="/films/creer" data-th-text="#{frag-entete.a.films.creer}"></a>
             </li>
-            <li>
-                <a href="/contexte" data-th-text="#{frag-entete.a.contexte}"></a>
+
+            <li data-th-if="${#authorization.expression('isAuthenticated()')}">
+                <a href="/logout" data-th-text="#{frag-entete.a.deconnexion}"></a>
             </li>
         </ul>
     </nav>

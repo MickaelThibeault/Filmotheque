@@ -1,0 +1,38 @@
+<!DOCTYPE html> <!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layouts/layout :: layout-filmotheque(titrePage=~{:: title}, contenuPage=~{:: main}, ressourceSupp=~{:: #ressources-css})}">
+<head>
+    <meta charset="UTF-8">
+    <!-- Accueil comme titre de page -->
+    <title data-th-text="#{login.title}"></title>
+    <!-- Ajout de CSS demo-form.css -->
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/tp-form.css}"/>
+        <link rel="stylesheet" data-th-href="@{/css/tp-error.css}"/>
+    </th:block>
+</head>
+<body>
+<main>
+    <form th:action="@{/login}" method="post">
+        <h1 data-th-text="#{login.h1}"></h1>
+
+        <div class="cards" th:if="${param.error}" data-th-text="#{login.error}"></div>
+
+        <div th:if="${param.logout}" data-th-text="#{login.logout}"></div>
+        <ul class="flex-outer">
+            <li>
+                <label for="inputUsername" data-th-text="#{login.username}"></label>
+                <input id="inputUsername" type="text" name="username"/>
+            </li>
+            <li>
+                <label for="inputPwd" data-th-text="#{login.pwd}"></label>
+                <input id="inputPwd" type="password" name="password"/>
+            </li>
+            <li>
+                <button type="submit" data-th-text="#{login.button}"></button>
+            </li>
+        </ul>
+    </form>
+</main>
+</body>
+</html>
